@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 
 public class ServerThread implements Runnable {
@@ -15,11 +16,17 @@ public class ServerThread implements Runnable {
     @Override
     public void run() {
         try(PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8))){
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8))) {
             String msg = "";
-            while(msg != null) {
-                msg = reader.readLine();
-                System.out.println(msg);
+            System.out.println("ESTABLISHED CONNESSION");
+            while (msg != null) {
+                try {
+                    msg = reader.readLine();
+                } catch(SocketException e){
+                    System.out.println("Client disconnesso");
+                    System.exit(0);
+                }
+                System.out.println("Client : " + msg);
                 String response = "ECHO: " + msg;
                 writer.write(response);
                 writer.flush();

@@ -9,6 +9,7 @@ public class Server {
 
     public static void main(String[] args){
         try(ServerSocket serverSocket = new ServerSocket(PORT)){
+            System.out.println("SERVER READY");
             while (true) {
                 new Thread(new ServerThread(serverSocket.accept())).start();
             }
