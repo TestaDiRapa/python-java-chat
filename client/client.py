@@ -27,7 +27,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
     try:
         client_socket.connect((HOST, PORT))
     except ConnectionRefusedError:
-        print("SERVER NON CONNESSO")
+        print("SERVER not ready")
         run=False
     
     while run:
@@ -36,8 +36,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         try:
             client_socket.sendall(msg.encode("UTF-8"))
         except ConnectionResetError:
-                print("SPEGNIMENTO")
+                print("SERVER OFF")
                 break
         buffer = client_socket.recv(1024)
         print(str(buffer, "UTF-8"))
-print("Finished")
+print("END")
