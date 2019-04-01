@@ -35,7 +35,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         msg += "\n"
         try:
             client_socket.sendall(msg.encode("UTF-8"))
-        except ConnectionResetError:
+        except (ConnectionResetError, BrokenPipeError):
                 print("SERVER OFF")
                 break
         buffer = client_socket.recv(1024)
